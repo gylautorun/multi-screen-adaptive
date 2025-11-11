@@ -44,14 +44,14 @@ export function createViteBuild(): BuildOptions {
         rollupOptions: {
             output: {
                 manualChunks: {
-                    gyl_vue: ['vue'],
-                    gyl_vuePlugin: ['vue-router', 'pinia', 'mitt'],
-                    gyl_lodash: ['lodash-es', 'lodash'],
-                    gyl_dayjs: ['dayjs'],
-                    gyl_axios: ['axios'],
-                    gyl_i18n: ['vue-i18n'],
-                    // gyl_pinyin_pro: ['pinyin-pro'],
-                    gyl_vueuse: ['@vueuse/core']
+                    vue: ['vue'],
+                    vuePlugin: ['vue-router', 'pinia', 'mitt'],
+                    lodash: ['lodash-es', 'lodash'],
+                    dayjs: ['dayjs'],
+                    axios: ['axios'],
+                    i18n: ['vue-i18n'],
+                    // pinyin_pro: ['pinyin-pro'],
+                    vueuse: ['@vueuse/core']
                 },
                 chunkFileNames: 'assets/js/[name].[hash].js',
                 entryFileNames: 'assets/js/[name].[hash].js',
