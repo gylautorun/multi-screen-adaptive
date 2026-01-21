@@ -21,7 +21,6 @@ export const useResize = (options: ResizeType = {}) => {
     // 优先使用传入的宽高，否则使用默认值
     const { w = BASE_WIDTH, h = BASE_HEIGHT, fullScreen = false, delay = 100 } = options;
 
-    // 缩放元素引用
     const screenRef = ref();
     const scale = ref(1);
 

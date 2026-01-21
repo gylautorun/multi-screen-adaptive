@@ -41,11 +41,14 @@ $base-header-height: 72px;
     --big-icon-size: #{screen.scale-size(30px)};
     --big-icon-margin: #{screen.scale-size(16px)};
     --big-border-width: #{screen.scale-size(3px)};
+    --big-border-radius: #{screen.scale-size(4px)};
 
     // 颜色变量 (默认暗色主题)
     --big-block-bg: #222733;
     --big-screen-bg: rgb(22, 21, 34);
     --big-screen-text-color: #fff;
+    --big-primary-color: #d64f4f;
+    --big-border-color: #3a4257;
 }
 
 // 大屏容器样式
@@ -65,6 +68,35 @@ $base-header-height: 72px;
     --big-screen-bg: rgb(238, 238, 238);
     --big-block-bg: #fff;
     --big-screen-text-color: rgb(22, 21, 34);
+    --big-primary-color: #333;
+    --big-border-color: #ddd;
+}
+
+// 蓝色主题变量覆盖
+.blue {
+    --big-screen-bg: rgb(10, 15, 30);
+    --big-block-bg: #152238;
+    --big-screen-text-color: #e6f0ff;
+    --big-primary-color: #4a90e2;
+    --big-border-color: #2a3f5f;
+}
+
+// 绿色主题变量覆盖
+.green {
+    --big-screen-bg: rgb(18, 32, 25);
+    --big-block-bg: #1e3b30;
+    --big-screen-text-color: #dcfce7;
+    --big-primary-color: #22c55e;
+    --big-border-color: #33664a;
+}
+
+// 紫色主题变量覆盖
+.purple {
+    --big-screen-bg: rgb(30, 20, 45);
+    --big-block-bg: #2d1d4a;
+    --big-screen-text-color: #f3e8ff;
+    --big-primary-color: #a855f7;
+    --big-border-color: #4c3575;
 }
 
 // 大屏主体布局
@@ -85,6 +117,7 @@ $base-header-height: 72px;
     // 主内容区
     &-main {
         position: relative;
+        z-index: 1;
         display: flex;
         height: calc(100% - var(--big-header-height));
     }
@@ -104,4 +137,10 @@ $base-header-height: 72px;
     &-right {
         width: var(--big-left-right-width);
     }
+}
+
+option.theme-option {
+    font-size: var(--big-font-size);
+    background-color: var(--big-block-bg);
+    color: var(--big-screen-text-color);
 }

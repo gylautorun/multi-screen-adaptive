@@ -1,7 +1,8 @@
 <template>
     <div :class="['big-screen-container', store.theme]">
         <div ref="screenRef" class="big-screen">
-            <Header />
+            <!-- <Header /> -->
+            <HeaderNew />
             <div class="big-screen-main">
                 <div class="big-screen-left">
                     <Left />
@@ -22,6 +23,7 @@ import { BASE_WIDTH, BASE_HEIGHT } from '../../hooks/use-resize';
 import { useScreenStore } from '@/stores/pages/screen';
 import { useResize } from '../../hooks/use-resize';
 import Header from './comps/header.vue';
+import HeaderNew from './comps/header-new.vue';
 import Left from './comps/left/index.vue';
 import Right from './comps/right/index.vue';
 import Center from './comps/center/index.vue';

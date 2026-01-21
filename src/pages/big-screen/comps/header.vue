@@ -15,22 +15,22 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue';
 import dayjs from 'dayjs';
-import { useScreenStore } from '@/stores/pages/screen';
-import darkIcon from '../assets/screen/qiehuan_dark.png';
-import lightIcon from '../assets/screen/qiehuan_light.png';
-import githubIconDark from '../assets/screen/github_dark.svg';
-import githubIconLight from '../assets/screen/github_light.svg';
+import { useScreenStore, ScreenThemeParams } from '@/stores/pages/screen';
 const store = useScreenStore();
 
-const icon = computed(() => (store.theme === 'dark' ? darkIcon : lightIcon));
-const githubIcon = computed(() => (store.theme === 'dark' ? githubIconDark : githubIconLight));
-
+const singleThemes = computed(() => store.getIconThemes);
+const activeIndex = ref(0);
+const icon = computed(() => store.getCurrentThemeData.icon);
 const currentTime = ref('');
 const timeId = ref();
+
 function handleChangeTheme() {
-    store.$patch({
-        theme: store.theme === 'dark' ? 'light' : 'dark'
-    });
+    const index = ++activeIndex.value % singleThemes.value.length;
+    activeIndex.value = index;
+    store.setTheme(singleThemes.value[index].value);
+    // store.$patch({
+    //     theme: store.theme === 'dark' ? 'light' : 'dark'
+    // });
 }
 
 function startTime() {
@@ -56,6 +56,7 @@ startTime();
         rgba(222, 171, 155, 0.6);
 
     position: relative;
+    z-index: 10;
     width: 100%;
     height: var(--big-header-height);
     background-image: url('../assets/screen/header_border_dark.png');
@@ -89,14 +90,14 @@ startTime();
         right: 0px;
         top: 50%;
         transform: translateY(-80%);
-        img {
-            width: var(--big-icon-size);
-            margin-right: var(--big-icon-margin);
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            &:hover {
-                transform: scale(1.2);
-            }
+    }
+    .theme-change {
+        width: var(--big-icon-size);
+        margin-right: var(--big-icon-margin);
+        cursor: pointer;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        &:hover {
+            transform: scale(1.2);
         }
     }
 }
