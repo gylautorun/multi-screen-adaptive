@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts" name="BaseChart">
-import { onMounted, onUnmounted, PropType, shallowRef, watch, withDefaults } from 'vue';
+import { onMounted, onUnmounted, PropType, shallowRef, watch } from 'vue';
 import echarts, { ECOption } from './base';
 import { EChartsType } from 'echarts/core';
 
