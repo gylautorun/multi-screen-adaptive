@@ -22,7 +22,7 @@
                         :key="item.id"
                         class="library-item"
                         draggable="true"
-                        @dragstart="onDragStart($event, item.type)"
+                        @dragstart="handleDragStart($event, item.type)"
                     >
                         <div class="item-icon">{{ item.icon }}</div>
                         <div class="item-info">
@@ -34,13 +34,7 @@
             </div>
 
             <!-- 中央画布 -->
-            <div
-                class="screen-canvas"
-                ref="canvasRef"
-                @drop="handleDrop"
-                @dragover="handleDragOver"
-                @dragenter.prevent
-            >
+            <div class="screen-canvas" ref="canvasRef">
                 <div class="canvas-content">
                     <!-- 大屏预览 -->
                     <div class="screen-preview" :class="currentConfig?.theme">
@@ -55,7 +49,12 @@
                         </div>
 
                         <!-- 主内容区 -->
-                        <div class="screen-main">
+                        <div
+                            class="screen-main"
+                            @drop="handleDrop"
+                            @dragover="handleDragOver"
+                            @dragenter.prevent
+                        >
                             <!-- 组件容器 -->
                             <div
                                 v-for="component in currentConfig?.components"
@@ -225,18 +224,25 @@
             </div>
         </div>
     </div>
+    <!-- 预览弹框组件 -->
+    <PreviewModal :visible="showPreviewModal" :config="currentConfig" @close="closePreviewModal" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useScreenConfigStore } from '@/stores/pages/screen-config';
 import { useDraggable, useComponentDrag } from '@/hooks/use-draggable';
+import { useScreenConfigStore } from '@/stores/pages/screen-config';
+import PreviewModal from '@/components/big-screen/PreviewModal.vue';
 
+// 创建configStore实例
 const configStore = useScreenConfigStore();
+
+// 响应式数据
 const canvasRef = ref<HTMLElement | null>(null);
 const draggingComponent = ref<string | null>(null);
-const componentRefs = ref<Map<string, HTMLElement>>(new Map());
 const selectedComponentId = ref<string | null>(null);
+const componentRefs = ref<Map<string, HTMLElement>>(new Map());
+const showPreviewModal = ref(false);
 
 // 使用组件拖拽钩子
 const { handleDragStart, handleDrop, handleDragOver } = useComponentDrag((type, x, y) => {
@@ -276,31 +282,6 @@ onMounted(() => {
     // 初始化组件拖拽
     initComponentDraggable();
 });
-
-// 拖拽相关方法
-const onDragStart = (event: DragEvent, componentType: string) => {
-    draggingComponent.value = componentType;
-    handleDragStart(event, componentType);
-};
-
-const onDrop = (event: DragEvent) => {
-    if (!draggingComponent.value || !canvasRef.value) return;
-
-    const rect = canvasRef.value.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    // 添加组件
-    configStore.addComponent(draggingComponent.value, { x, y });
-
-    // 重置拖拽状态
-    draggingComponent.value = null;
-
-    // 重新初始化拖拽
-    setTimeout(() => {
-        initComponentDraggable();
-    }, 100);
-};
 
 // 初始化组件拖拽
 const initComponentDraggable = () => {
@@ -342,8 +323,13 @@ const saveConfig = () => {
 };
 
 const previewConfig = () => {
-    // 这里可以实现预览功能，例如打开新窗口显示大屏
-    alert('预览功能开发中...');
+    // 打开预览弹框
+    showPreviewModal.value = true;
+};
+
+const closePreviewModal = () => {
+    // 关闭预览弹框
+    showPreviewModal.value = false;
 };
 
 const loadConfigFromLocal = () => {
@@ -754,6 +740,21 @@ const updateComponentSize = (componentId: string, size: { width: number; height:
                 flex: 1;
             }
         }
+    }
+}
+
+/* 画布样式 */
+.screen-canvas {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    .canvas-content {
+        width: 100%;
+        height: 100%;
     }
 }
 </style>

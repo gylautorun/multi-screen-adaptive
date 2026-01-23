@@ -363,6 +363,8 @@ export const useComponentDrag = (onDrop: (type: string, x: number, y: number) =>
         const type = event.dataTransfer.getData('text/plain');
         if (!type) return;
 
+        // 使用 canvasRef 作为放置区域，而不是 event.currentTarget
+        // 这样可以确保位置计算的准确性
         const dropZone = event.currentTarget as HTMLElement;
         const rect = dropZone.getBoundingClientRect();
         const x = event.clientX - rect.left;
